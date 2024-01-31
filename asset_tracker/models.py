@@ -3,6 +3,12 @@ from django.contrib.auth.models import AbstractUser
 import uuid 
 # Create your models here.
 
+# Allocation status
+ALLOCATION_STATUS = {
+    ('ALLOCATED', 'Allocated'),
+    ('UNALLOCATED', 'Unallocated')
+}
+
 class User(AbstractUser):
     employee_code = models.CharField(max_length=10, unique=True, null=True)
 
@@ -22,6 +28,8 @@ class AssetType(models.Model):
 
 class Asset(models.Model):
     name = models.TextField()
+    alloted_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="assets_allocated", null=True) #since one user can have many assets allocated
+    current_allocation_status = models.CharField(max_length=15, choices=ALLOCATION_STATUS, default="UNALLOCATED")
     code = models.UUIDField(default=uuid.uuid4, editable=False)
     type = models.ForeignKey(AssetType, on_delete=models.CASCADE, related_name="assets")
     is_active = models.BooleanField(default=True)
