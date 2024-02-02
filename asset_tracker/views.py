@@ -320,10 +320,3 @@ def generate_csv(requet):
 
     return response
 
-
-def testing_chart(request):
-
-
-    return render(request, "asset_tracker/chartjs.html")
-
-

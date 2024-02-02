@@ -27,6 +27,10 @@
             <p>Created at:- <strong>{{ asset.created_at  }}</strong></p>
             <p>Last-Modified at:- <strong>{{ asset.updated_at  }}</strong></p>
             
+             <h2>Asset Image:- </h2>
+             {% for image in asset.images.all %}
+                <img src="{{ image.image.url }}" alt="Image"> &nbsp;&nbsp;&nbsp;
+            {% endfor %}
             
         </div>
 

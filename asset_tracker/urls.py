@@ -9,7 +9,6 @@ urlpatterns = [
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
     path("asset_types/", views.asset_types, name="asset_types"),
-    path("chartjs/", views.testing_chart, name="testing_chart"),
     path("asset_type_detail/<int:asset_type_id>", views.asset_types_detail, name="asset_type_detail"),
     path("asset_type_update/<int:asset_type_id>", views.assset_type_update, name="asset_type_update"),
     path("asset_type_add", views.asset_type_add, name="asset_type_add"),
