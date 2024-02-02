@@ -1,0 +1,37 @@
+{% extends "asset_tracker/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Asset Type Edit Page 
+{% endblock %}
+
+{% block body %}
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="container-fluid">
+
+                <h3>Asset Type Edit form!</h3>
+                {% for message in messages %}
+                    <div>{{ message }}</div>
+                {% endfor %}
+
+                <form method="post" action="{% url 'asset_type_update' asset_type_id %}">
+
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Update">
+                </form>
+
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    {% for field, errors in form.errors.items %}
+                        {{ field }}: {{ errors|join:", " }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+
+            </div>
+        </section>
+    </div>
+{% endblock %}

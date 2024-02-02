@@ -1,0 +1,175 @@
+{% extends "asset_tracker/layout.html" %}
+{% load static %}
+
+
+{% block title %}
+    Assets
+{% endblock %}
+
+{% block body %}
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="container-fluid">
+
+                {% if messages %}
+                    <div class="alert alert-success alert-dismissible fade show text-center" id="myAlert" role="alert">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                        <button type="button" id="myAlert" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+                
+                <h3>Assets </h3>
+
+                <table class="table table-bordered table-hover" >
+                    <tbody>
+                        {% for asset in assets %}
+                           <tr>
+                                <td style="width: 500px">
+                                    <a href="{% url 'asset_detail' asset.id %}">
+                                        {{ asset }}</td>
+                                    </a>
+                                </td>
+
+                                <td style="width: 100px">
+                                    <a href="{% url 'asset_update' asset.id  %}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                          </svg>
+                                    </a>
+                                </td>
+                                <td style="width: 100px">
+                                    <a href="#" class="delete-asset-type" data-asset-type-id="{{ asset.id }}" data-toggle="modal" data-target="#confirmationModal">
+                                        <svg id="mySvg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                          </svg>
+                                    </a>
+                                </td>
+                            </tr> 
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- button to add more Asset types -->
+                
+                <a href="{% url 'asset_add' %}" class="btn btn-primary">Add New Asset</a>
+                &nbsp;
+                <a href="{% url 'download_csv' %}" class="btn btn-primary">Download CSV</a>
+
+                <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <!-- <div class="modal-header">
+                                <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div style="color: red" class="modal-body">
+                                Are you sure? If you delete this asset type, all assets under this asset type will be deleted too!
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelAcction">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="confirmAction">Confirm</button>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+    $(document).ready(function () {
+            console.log("Document is ready!");
+            $('#cancelAcction').on('click', function () {
+                console.log("Cancel button clicked!");
+                $('#confirmationModal').modal('hide');
+         });
+            
+        });
+    
+    
+        var deleteButtons = document.querySelectorAll('.delete-asset-type');
+
+        deleteButtons.forEach(function(button){
+            $('#cancelAcction').on('click', function () {
+                console.log("Cancel button clicked!");
+                $('#confirmationModal').modal('hide');
+         });
+        })
+
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Get the asset_type_id from the data attribute
+                var assetTypeId = this.getAttribute('data-asset-type-id');
+    
+                // Update the modal content dynamically
+                document.querySelector('#confirmationModal .modal-content').innerHTML = `
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div style="color: red" class="modal-body">
+                        Are you sure? 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelAction">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="confirmAction" onclick="deleteAssetType(${assetTypeId})">Confirm</button>
+                    </div>
+                `;
+    
+                // Show the modal
+                $('#confirmationModal').modal('show');
+            });
+        });
+    
+        
+    
+         // Handle the cancel button click
+         
+    
+        // Function to handle the delete action (you can customize this)
+        function deleteAssetType(assetTypeId) {
+            // Make the fetch call or perform delete action here
+            console.log(`Deleting asset type with ID: ${assetTypeId}`);
+            fetch(`/asset-tracker/asset_delete/${assetTypeId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                console.log(data);
+                // close the modal after a successful operation
+                $('#confirmationModal').modal('hide');
+                location.reload(); // reload the page to reflect changes
+            })
+            .catch(error => {
+                // Handle any errors
+                console.error(error);
+            });
+            // Close the modal after a successful operation
+            $('#confirmationModal').modal('hide');
+        }
+    </script>
+
+
+
+
+{% endblock %}

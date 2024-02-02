@@ -1,0 +1,38 @@
+{% extends "asset_tracker/layout.html" %}
+{% load static %}
+
+{% block title %}
+ Asset Detail Page 
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block body %}
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <br>
+            <h3>Asset #{{ asset.id }} detail :- </h3>
+            <p>Asset Name:- <strong>{{ asset.name }}</strong></p>
+            <p>Alloted to:- <strong>{{ asset.alloted_to.username }}</strong></p>
+            <p>Current Allocation Status:- <strong>{{ asset.current_allocation_status }}</strong></p>
+            <p>Asset Code:- <strong>{{ asset.code }}</strong></p>
+            <p>Asset type :- <strong>{{ asset.type.type }}</strong></p>
+            <p>Is Active :- <strong>{{ asset.is_active }}</strong></p>
+            <p>Created at:- <strong>{{ asset.created_at  }}</strong></p>
+            <p>Last-Modified at:- <strong>{{ asset.updated_at  }}</strong></p>
+            
+            
+        </div>
+
+    </section>
+
+</div>
+
+
+{% endblock %}

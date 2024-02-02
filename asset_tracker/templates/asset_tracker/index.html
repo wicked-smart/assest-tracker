@@ -1,73 +1,190 @@
-<html>
-    <head>
-        <title>Testing Dashboard chart!</title>
-        <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-    </head>
-    <body>
-        <h2>Dashboard!</h2>
-        <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-           style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
-    </a>
-  
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+{% extends 'asset_tracker/layout.html' %}
+{% load static %}
+
+{% block title %}
+  Asset Tracker Dashboard
+{% endblock %}
+
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Dashboard</h1>
+          </div>
+          
         </div>
-        <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6">
+            <!-- PIE CHART -->
+            <div class="card card-danger">
+              <div class="card-header">
+                <h3 class="card-title">Pie Chart</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <canvas id="pieChart"  style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <!-- Include the JSON data as scripts using json_script -->
+              
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            
+            <!-- AREA CHART -->
+            
+            <!-- /.card -->
+
+            <!-- DONUT CHART -->
+            
+            <!-- /.card -->
+
+            
+
+          </div>
+          <!-- /.col (LEFT) -->
+          <div class="col-md-6">
+            <!-- BAR CHART -->
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Bar Chart</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart">
+                  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <!-- LINE CHART -->
+
+            
+
+            
+
+            <!-- STACKED BAR CHART -->
+           
+
+          </div>
+          <!-- /.col (RIGHT) -->
         </div>
-      </div>
-  
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Starter Pages
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Active Page</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inactive Page</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Simple Link
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Add Content Here -->
   </aside>
-    </body>
-</html>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+{% endblock %}
+
+{% block script %}
+
+<!-- jQuery -->
+<script src="{% static '/asset_tracker/AdminLTE-3.2.0/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static '/asset_tracker/AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- ChartJS -->
+<script src="{% static '/asset_tracker/AdminLTE-3.2.0/plugins/chart.js/Chart.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static '/asset_tracker/AdminLTE-3.2.0/dist/js/adminlte.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static '/asset_tracker/AdminLTE-3.2.0/dist/js/demo.js' %}"></script>
+<!-- Page specific script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    
+
+    //Pie Chart
+   var labels = JSON.parse('{{ labels_json|safe }}')
+   var data = JSON.parse('{{ data_json|safe }}')
+
+   console.log(labels)
+   console.log(data)
+
+   var ctx = document.getElementById('pieChart').getContext('2d');
+   
+  
+   var myChart = new Chart(ctx, {
+       type: 'pie',
+       data: {
+           labels: labels,
+           datasets: [{
+               data: data
+           }],
+       },
+       options: {
+      maintainAspectRatio : false,
+      responsive : true,
+    },
+   });
+
+   //Bar Chart
+   var bar_labels = ['Active', 'Inactive']
+   var bar_data = JSON.parse('{{ active_data_json|safe }}')
+
+   console.log(bar_labels)
+   console.log(bar_data)
+
+   var ctx_bar = document.getElementById('barChart').getContext('2d');
+   
+  
+   var myChart = new Chart(ctx_bar, {
+       type: 'bar',
+       data: {
+           labels: bar_labels,
+           datasets: [{
+            label: "# of Active Assets",
+              data: bar_data,
+              borderWidth: 1
+           }],
+       },
+       options: {
+        scales: {
+           y: {
+            beginAtZero: true,
+            max: 5
+         }
+        }
+      },
+   });
+
+});
+</script>
+
+{% endblock %}
+

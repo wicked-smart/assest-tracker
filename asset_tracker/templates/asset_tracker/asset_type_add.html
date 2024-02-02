@@ -1,0 +1,26 @@
+{% extends "asset_tracker/layout.html" %}
+{% load static %}
+
+
+{% block title %}
+ Asset Type Detail Page 
+{% endblock %}
+
+
+{% block body %}
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="container-fluid">
+
+                <h3>New Asset Type Add - </h3>
+
+                <form method="post" action="{% url 'asset_type_add' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Add Asset Type">
+                </form>
+
+            </div>
+        </section>
+    </div>
+{% endblock %}

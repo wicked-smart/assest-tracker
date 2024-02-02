@@ -1,0 +1,39 @@
+{% extends "asset_tracker/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Asset Edit Page 
+{% endblock %}
+
+{% block body %}
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="container-fluid">
+
+                <h3>Asset Edit form!</h3>
+                {% for message in messages %}
+                    <div>{{ message }}</div>
+                {% endfor %}
+
+                <form method="post" action="{% url 'asset_update' asset_id %}" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <label for="files">Select Images:</label>
+                    <input type="file" name="files" multiple><br>
+                    <input type="submit" value="Update">
+                </form>
+
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    {% for field, errors in form.errors.items %}
+                        {{ field }}: {{ errors|join:", " }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+
+            </div>
+        </section>
+    </div>
+{% endblock %}

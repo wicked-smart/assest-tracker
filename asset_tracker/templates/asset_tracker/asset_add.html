@@ -1,0 +1,28 @@
+{% extends "asset_tracker/layout.html" %}
+{% load static %}
+
+
+{% block title %}
+ Asset Add Page 
+{% endblock %}
+
+
+{% block body %}
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+
+            <h3>New Asset  Add - </h3>
+
+            <form method="post" action="{% url 'asset_add' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ asset_form.as_p }}
+                <label for="files">Select Images:</label>
+                <input type="file" name="files" multiple><br>
+                <input type="submit" value="Add Asset">
+            </form>
+
+        </div>
+    </section>
+</div>
+{% endblock %}

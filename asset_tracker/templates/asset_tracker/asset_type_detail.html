@@ -1,0 +1,41 @@
+{% extends "asset_tracker/layout.html" %}
+{% load static %}
+
+{% block title %}
+ Asset Type Detail Page 
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block body %}
+
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <br>
+            <h3>Asset #{{ asset_type.id }} detail :- </h3>
+            <p>Asset Type:- <strong>{{ asset_type.type }}</strong></p>
+            <p>Description :- <strong>{{ asset_type.description }}</strong></p>
+            <p>Created at:- <strong>{{ asset_type.created_at  }}</strong></p>
+            <p>Last-Modified at:- <strong>{{ asset_type.updated_at  }}</strong></p>
+            
+            
+            {% if asset_type.assets.all|length > 0 %}
+                <p>Assets Under this Type:- </p>
+            {% for asset in asset_type.assets.all %}
+                <li> <strong>{{ asset }}</strong></li>
+            {% endfor %}
+            {% endif %}
+            
+        </div>
+
+    </section>
+
+</div>
+
+
+{% endblock %}
