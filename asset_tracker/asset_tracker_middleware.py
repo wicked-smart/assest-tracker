@@ -19,6 +19,8 @@ class AssetTrackerMiddleware:
             base_name, extension = os.path.splitext(self.log_path)
             timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
             new_log_path = f'{base_name}_{timestamp}{extension}'
+
+            #Update new log file path
             self.log_path = new_log_path
             
             with open(new_log_path, 'a') as log_file:
@@ -29,11 +31,11 @@ class AssetTrackerMiddleware:
         if os.path.getsize(self.log_path) > self.max_file_size:
             self.setup_logging()  
 
-        # Add the current date to the log message
+        # Add the log message
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         log_message = f"{timestamp} - {message}\n"
 
-        # Append the log message to the file
+        
         with open(self.log_path, 'a') as log_file:
             log_file.write(log_message)
 
