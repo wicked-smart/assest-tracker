@@ -1,5 +1,6 @@
 {% extends "asset_tracker/layout.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     Asset Edit Page 
@@ -18,7 +19,7 @@
                 <form method="post" action="{% url 'asset_update' asset_id %}" enctype="multipart/form-data">
 
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form|crispy }}
                     <label for="files">Select Images:</label>
                     <input type="file" name="files" multiple><br>
                     <input type="submit" value="Update">

@@ -1,5 +1,6 @@
 {% extends "asset_tracker/layout.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     Asset Type Edit Page 
@@ -18,7 +19,7 @@
                 <form method="post" action="{% url 'asset_type_update' asset_type_id %}">
 
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form|crispy }}
                     <input type="submit" value="Update">
                 </form>
 

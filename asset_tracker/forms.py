@@ -8,6 +8,10 @@ class AssetTypeModelForm(forms.ModelForm):
     class Meta:
         model = AssetType
         fields = ["type", "description"]
+        widget = {
+            'type': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.TextInput(attrs={'class': 'form-control'})
+        }
 
 
 class AssetModelForm(forms.ModelForm):
@@ -26,6 +30,9 @@ class AssetModelForm(forms.ModelForm):
     class Meta:
         model = Asset
         fields = ["name", "alloted_to", "current_allocation_status", "type", "is_active"]
+        widget = {
+            'name': forms.TextInput(attrs={'class': 'form-control'})
+        }
 
 
 

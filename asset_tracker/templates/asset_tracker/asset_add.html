@@ -1,5 +1,6 @@
 {% extends "asset_tracker/layout.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 
 
@@ -18,7 +19,7 @@
 
             <form method="post" action="{% url 'asset_add' %}" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ asset_form.as_p }}
+                {{ asset_form|crispy }}
                 <input type="submit" class="btn btn-primary" value="Add Asset">
             </form>
 

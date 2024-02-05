@@ -137,10 +137,12 @@
    console.log(data)
 
    var backgroundColors = [];
-   // Generate dynamic background colors based on data length
+   // dynamic background colors based on data length
   for (var i = 0; i < data.length; i++) {
       
-      var dynamicColor = 'rgba(' + Math.floor(Math.random() * 256) + ',' +
+    
+      // Dynamically generate color string like  rgba(255, 99, 132, 0.7)
+    var dynamicColor = 'rgba(' + Math.floor(Math.random() * 256) + ',' +
                         Math.floor(Math.random() * 256) + ',' +
                         Math.floor(Math.random() * 256) + ', 0.7)';
       backgroundColors.push(dynamicColor);
@@ -171,7 +173,7 @@
    console.log(bar_labels)
    console.log(bar_data)
 
-   var backgroundColors = ['rgba(75, 192, 192, 0.7)', 'rgba(255, 99, 132, 0.7)'];
+   var backgroundColors = ['cyan', 'rgba(255, 99, 132, 0.7)'];
    var ctx_bar = document.getElementById('barChart').getContext('2d');
    
   
