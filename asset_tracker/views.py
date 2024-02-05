@@ -189,16 +189,17 @@ def asset_type_add(request):
 
         form = AssetTypeModelForm(request.POST)
         if form.is_valid():
-            new_asset_type = form.save()
-            new_asset_type.created_by = request.user
-            new_asset_type.save()
+           try:
+                new_asset_type = form.save(commit=False)
+                new_asset_type.created_by = request.user
+                new_asset_type.save()
 
-            messages.success(request, "Asset type Added succesfully!")
-            return HttpResponseRedirect(reverse("asset_types"))
-        else:
-            
-            messages.error(request, "Form validation failed. Please check the data.")
-            return render(request, "asset_tracker/asset_type_add.html", {"form": form})
+                messages.success(request, "Asset type added successfully!")
+                return HttpResponseRedirect(reverse("asset_types"))
+           
+           except IntegrityError as e:
+                messages.error(request, f"IntegrityError: {str(e)}")
+                return render(request, "asset_tracker/asset_types.html")
     else:
         
         form = AssetTypeModelForm()

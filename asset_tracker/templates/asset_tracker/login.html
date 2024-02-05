@@ -48,6 +48,9 @@
          <div class="form-group mb-3">
                <label for="password" class="form-label">Password :- </label>
                <input type="password" name="password" class="form-control" placeholder="password">
+               {% if login_error %}
+                    <small class="form-text"><span class="text-danger">{{ login_error }}</span></small>
+                {% endif %}
          </div>
 
          <div class="form-check mb-3">

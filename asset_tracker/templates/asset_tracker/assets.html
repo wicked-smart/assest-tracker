@@ -23,11 +23,14 @@
                 {% endif %}
                 
                 <h3>Assets </h3>
+                  
+                {% if assets|length > 0 %}
                 <br>
-                <span class="current">
-                    Page {{ assets.number }} of {{ assets.paginator.num_pages }}.
-                </span>
-                <br><br>
+                    <span class="current">
+                        Page {{ assets.number }} of {{ assets.paginator.num_pages }}.
+                    </span>
+                    <br><br>
+                {% endif %}
 
                 <table class="table table-bordered table-hover" >
                     <tbody>
@@ -169,7 +172,17 @@
         
     
          // Handle the cancel button click
-         
+            $(document).on('click', '#cancelAction', function() {
+            console.log("Cancel button clicked!");
+            $('#confirmationModal').modal('hide');
+        });
+
+        //Handle the close button
+        $(document).on('click', '#closeButton', function () {
+            console.log("Close button clicked!");
+            $('#confirmationModal').modal('hide');
+        });
+            
     
         // Function to handle the delete action (you can customize this)
         function deleteAssetType(assetTypeId) {

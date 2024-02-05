@@ -1,6 +1,7 @@
 import os
 from django.urls import resolve
-from datetime import datetime
+from datetime import datetime, timezone
+import pytz
 
 
 
@@ -8,7 +9,7 @@ class AssetTrackerMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
         self.log_path = 'asset_tracker.log'
-        self.max_file_size = 200000  # Maximum file size in bytes
+        self.max_file_size = 1e5  # Maximum file size in bytes
         self.setup_logging()
 
     def setup_logging(self):
@@ -20,11 +21,13 @@ class AssetTrackerMiddleware:
             timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
             new_log_path = f'{base_name}_{timestamp}{extension}'
 
-            #Update new log file path
+           
             self.log_path = new_log_path
             
             with open(new_log_path, 'a') as log_file:
                 pass 
+            
+
 
     def log_message(self, message):
         # Check if the log file exceeds the maximum size
@@ -32,14 +35,13 @@ class AssetTrackerMiddleware:
             self.setup_logging()  
 
         # Add the log message
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        timestamp = datetime.now(pytz.timezone('Asia/Kolkata')).strftime('%Y-%m-%d %H:%M:%S')
         log_message = f"{timestamp} - {message}\n"
 
         
         with open(self.log_path, 'a') as log_file:
             log_file.write(log_message)
 
-        
     
     def __call__(self, request):
 

@@ -16,17 +16,22 @@
                         {% for message in messages %}
                             {{ message }}
                         {% endfor %}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <button type="button" class="close"  data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                 {% endif %}
                 
                 <h3>Asset Types </h3>
+
+                {% if asset_types|length > 0 %}
                 <span class="current">
                     Page {{ asset_types.number }} of {{ asset_types.paginator.num_pages }}.
                 </span>
                 <br><br>
+                {% endif %}
+
+                
                 <table class="table table-bordered table-hover" >
                     <tbody>
                         {% for asset_type in asset_types %}
@@ -66,9 +71,7 @@
                             </div>
                             
                         {% endif %}
-                
-            
-                       
+                  
                         {% if asset_types.has_next %}
                             <div>
                                 <a href="?page={{ asset_types.next_page_number }}" class="btn btn-primary ">next</a>
@@ -83,24 +86,11 @@
                 <br>
 
                 <!-- button to add more Asset types -->
-                
                 <a href="{% url 'asset_type_add' %}" class="btn btn-primary">Add Asset type</a>
                 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <!-- <div class="modal-header">
-                                <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div style="color: red" class="modal-body">
-                                Are you sure? If you delete this asset type, all assets under this asset type will be deleted too!
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelAcction">Cancel</button>
-                                <button type="button" class="btn btn-primary" id="confirmAction">Confirm</button>
-                            </div> -->
+                            
                         </div>
                     </div>
                 </div>
@@ -116,17 +106,9 @@
 
 <script>
 
-
-
     var deleteButtons = document.querySelectorAll('.delete-asset-type');
 
-    deleteButtons.forEach(function(button){
-        console.log("butttton hgjkshdfkjshjk")
-            $('#cancelAcction').on('click', function () {
-                console.log("Cancel button clicked!");
-                $('#confirmationModal').modal('hide');
-         });
-        })
+    
 
     deleteButtons.forEach(function(button) {
         button.addEventListener('click', function() {
@@ -137,7 +119,7 @@
             document.querySelector('#confirmationModal .modal-content').innerHTML = `
                 <div class="modal-header">
                     <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" id="closeButton" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -158,7 +140,20 @@
     
 
      // Handle the cancel button click
-     
+        $(document).on('click', '#cancelAction', function() {
+        console.log("Cancel button clicked!");
+        $('#confirmationModal').modal('hide');
+    });
+
+    //Handle the close button
+    $(document).on('click', '#closeButton', function () {
+        console.log("Close button clicked!");
+        $('#confirmationModal').modal('hide');
+    });
+
+    $(document).on('click', '.close', function () {
+            $(this).closest('.alert').alert('close');
+        });
 
     // Function to handle the delete action (you can customize this)
     function deleteAssetType(assetTypeId) {
@@ -179,12 +174,13 @@
             location.reload(); // reload the page to reflect changes
         })
         .catch(error => {
-            // Handle any errors
+            
             console.error(error);
         });
         // Close the modal after a successful operation
         $('#confirmationModal').modal('hide');
     }
+
 </script>
 
 {% endblock %}
