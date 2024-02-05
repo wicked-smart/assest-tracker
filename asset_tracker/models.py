@@ -17,17 +17,22 @@ class User(AbstractUser):
 
 
 class AssetType(models.Model):
-    type = models.TextField(unique=True)
+    type = models.TextField()
     description = models.TextField()
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="asset_types_created", null=True, default=None )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.type}"
+
+    class Meta:
+        unique_together = ('type', 'created_by')
     
 
 class Asset(models.Model):
     name = models.TextField()
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="assets_created", null=True,default=None)
     alloted_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="assets_allocated", null=True) #since one user can have many assets allocated
     current_allocation_status = models.CharField(max_length=15, choices=ALLOCATION_STATUS, default="UNALLOCATED")
     code = models.UUIDField(default=uuid.uuid4, editable=False)

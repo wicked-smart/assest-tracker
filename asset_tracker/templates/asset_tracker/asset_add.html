@@ -2,6 +2,8 @@
 {% load static %}
 
 
+
+
 {% block title %}
  Asset Add Page 
 {% endblock %}
@@ -17,8 +19,6 @@
             <form method="post" action="{% url 'asset_add' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ asset_form.as_p }}
-                <label for="files">Select Images:</label>
-                <input type="file" name="files" multiple><br>
                 <input type="submit" class="btn btn-primary" value="Add Asset">
             </form>
 

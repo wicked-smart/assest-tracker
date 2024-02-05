@@ -8,7 +8,7 @@ class AssetTrackerMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
         self.log_path = 'asset_tracker.log'
-        self.max_file_size = 2000  # Maximum file size in bytes
+        self.max_file_size = 200000  # Maximum file size in bytes
         self.setup_logging()
 
     def setup_logging(self):

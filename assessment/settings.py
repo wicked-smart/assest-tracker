@@ -72,6 +72,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'assessment.wsgi.application'
 
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 

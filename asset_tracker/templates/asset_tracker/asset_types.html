@@ -23,7 +23,10 @@
                 {% endif %}
                 
                 <h3>Asset Types </h3>
-
+                <span class="current">
+                    Page {{ asset_types.number }} of {{ asset_types.paginator.num_pages }}.
+                </span>
+                <br><br>
                 <table class="table table-bordered table-hover" >
                     <tbody>
                         {% for asset_type in asset_types %}
@@ -53,6 +56,31 @@
                         {% endfor %}
                     </tbody>
                 </table>
+
+                <!-- Add Pagination UI -->
+                <div class="pagination d-flex justify-content-end">
+                        {% if asset_types.has_previous %}
+                            <div>
+                                <a href="?page=1"  class="btn btn-primary">&laquo; first</a>
+                                <a href="?page={{ asset_types.previous_page_number }}"  class="btn btn-primary">previous</a>
+                            </div>
+                            
+                        {% endif %}
+                
+            
+                       
+                        {% if asset_types.has_next %}
+                            <div>
+                                <a href="?page={{ asset_types.next_page_number }}" class="btn btn-primary ">next</a>
+                                <a href="?page={{ asset_types.paginator.num_pages }}" class="btn btn-primary ">last &raquo;</a>
+                            </div>
+                        {% endif %}
+                        
+                        
+                    </span>
+                </div>
+
+                <br>
 
                 <!-- button to add more Asset types -->
                 

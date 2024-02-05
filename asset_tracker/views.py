@@ -11,6 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import IntegrityError
 from assessment import settings
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 # Create your views here
 
 
@@ -100,7 +102,7 @@ def logout_view(request):
 
 # Load Home Page
 def index(request):
-    assets_types = AssetType.objects.all()
+    assets_types = AssetType.objects.filter(created_by=request.user)
     print("assets_types := ", assets_types)
     assets_per_type = []
     labels = []
@@ -113,8 +115,8 @@ def index(request):
     print("assets_count := ", assets_per_type)
 
     
-    active = Asset.objects.filter(is_active=True).count()
-    inactive = Asset.objects.filter(is_active=False).count()
+    active = Asset.objects.filter(created_by=request.user, is_active=True).count()
+    inactive = Asset.objects.filter(created_by=request.user, is_active=False).count()
 
 
     return render(request, "asset_tracker/index.html", {
@@ -127,11 +129,25 @@ def index(request):
 #List all the Asset types
 def asset_types(request):
 
-    asset_types = AssetType.objects.all()
+    asset_types = AssetType.objects.filter(created_by=request.user)
 
-    return render(request, "asset_tracker/asset_types.html",{
-        "asset_types": asset_types
-    })
+    items_per_page = 3  
+    paginator = Paginator(asset_types, items_per_page)
+    page = request.GET.get('page') # Get page number
+
+    try:
+        paginated_queryset = paginator.page(page)
+
+    except PageNotAnInteger:
+        # If page is not an integer, deliver the first page
+        paginated_queryset = paginator.page(1)
+
+    except EmptyPage:
+        # If page is out of range, display last page
+        paginated_queryset = paginator.page(paginator.num_pages)
+
+    return render(request, 'asset_tracker/asset_types.html', {"asset_types": paginated_queryset})
+    
 
 
 # Asset type Detail
@@ -173,11 +189,16 @@ def asset_type_add(request):
 
         form = AssetTypeModelForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_asset_type = form.save()
+            new_asset_type.created_by = request.user
+            new_asset_type.save()
+
             messages.success(request, "Asset type Added succesfully!")
             return HttpResponseRedirect(reverse("asset_types"))
         else:
+            
             messages.error(request, "Form validation failed. Please check the data.")
+            return render(request, "asset_tracker/asset_type_add.html", {"form": form})
     else:
         
         form = AssetTypeModelForm()
@@ -186,19 +207,6 @@ def asset_type_add(request):
         })
 
 
-# Asset type delete
-@csrf_exempt
-def asset_type_delete(request, asset_type_id):
-    
-    try:
-        AssetType.objects.filter(id=asset_type_id).delete()
-        return JsonResponse({
-            'message':'Deleted Succesfully!'
-        })
-    except:
-        return JsonResponse({
-            'message': 'Error encountered while deleting!'
-        })
 
 # asset type delete
 @csrf_exempt
@@ -234,7 +242,7 @@ def asset_delete(request, asset_id):
 def asset_add(request):
 
     if request.method == "GET":
-        asset_form = AssetModelForm()
+        asset_form = AssetModelForm(user=request.user)
         return render(request, "asset_tracker/asset_add.html", {
             "asset_form": asset_form
         })
@@ -244,7 +252,10 @@ def asset_add(request):
         #asset_image_form = AssetImageModelForm(request.POST, request.FILES)
 
         if asset_form.is_valid():
-            asset = asset_form.save()  
+            asset = asset_form.save()
+            asset.created_by = request.user  
+            asset.save()
+
             for image in request.FILES.getlist('files'):
                 AssetImage.objects.create(asset=asset, image=image)
             messages.success(request, "Asset type Added succesfully!")
@@ -263,11 +274,25 @@ def asset_add(request):
 
 # List all the assets
 def assets(request):
-    assets = Asset.objects.all().order_by('-updated_at')
+    assets = Asset.objects.filter(created_by=request.user).order_by('-updated_at')
+    items_per_page = 3  
+    paginator = Paginator(assets, items_per_page)
+    page = request.GET.get('page') # Get page number
 
-    return render(request, "asset_tracker/assets.html", {
-        "assets": assets
-    })
+    try:
+        paginated_queryset = paginator.page(page)
+        
+    except PageNotAnInteger:
+        # If page is not an integer, deliver the first page
+        paginated_queryset = paginator.page(1)
+
+    except EmptyPage:
+        # If page is out of range, display last page
+        paginated_queryset = paginator.page(paginator.num_pages)
+
+    return render(request, 'asset_tracker/assets.html', {"assets": paginated_queryset})
+    
+    
 
 
 
@@ -306,17 +331,17 @@ def assset_update(request, asset_id):
 
 
 # Generate all the csv data for assets and return to the template
-def generate_csv(requet):
-    assets = Asset.objects.all()
+def generate_csv(request):
+    assets = Asset.objects.filter(created_by=request.user)
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="assets.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Name', 'Alloted To', 'Current Allocation Status', 'Code', 'Type', 'Is Active'])
+    writer.writerow(['Name', 'Created_by', 'Alloted To', 'Current Allocation Status', 'Code', 'Type', 'Is Active'])
 
     for asset in assets:
-        writer.writerow([asset.name, asset.alloted_to, asset.current_allocation_status, asset.code, asset.type, asset.is_active])
+        writer.writerow([asset.name, asset.created_by, asset.alloted_to, asset.current_allocation_status, asset.code, asset.type, asset.is_active])
 
     return response
 
